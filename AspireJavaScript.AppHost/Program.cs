@@ -7,6 +7,7 @@ var weatherApi =
 builder.AddNpmApp("angular", "../AspireJavaScript.Angular")
     .WithReference(weatherApi)
     .WithEndpoint(containerPort: 3000, scheme: "http", env: "PORT")
+    .WithEnvironment("NODE_ENV", "production")
     .AsDockerfileInManifest();
 
 // React: npm run start

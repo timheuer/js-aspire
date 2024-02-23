@@ -1,14 +1,19 @@
-FROM node:20.7
+FROM node:20.7 as build
 
 WORKDIR /app
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
-
 RUN npm i
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run build
 
-CMD [ "npm", "dev" ]
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
